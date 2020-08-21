@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Curso.hasMany(models.Paralelos, { as: "paralelos", foreignKey: "cursoId" })
-      Curso.hasMany(models.Cursos_Materia, { as: "curso", foreignKey: "cursoId" })
     }
   };
   Curso.init({

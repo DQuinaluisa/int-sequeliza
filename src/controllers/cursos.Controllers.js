@@ -1,18 +1,40 @@
 const { Curso } = require('../models/index');
+const  fs = require('fs-extra');
+const { unlink  }  = require('fs-extra');
+const  path = require('path');
+
+async function find (req, res, next) {
+    let curso = await Tareas.findByPk(req.params.id);
+    if (!curso) {
+        res.status(404).json({
+            msg: "Tarea no encontrada"
+        });
+    }else {
+        req.curso = curso;
+        next();
+    }
+}
+
+async function show ( req, res) {
+    res.json(req.curso);
+    
+}
 
 
-async function crearCurso(req, res) {
+async function crearCurso (req, res) {
     try {
-        const curso = await Curso.create({
-            nombre_curso: req.body.nombre_curso,
+              
+        await Curso.create({
+            nombre_curso : req.body.nombre_curso,
             paralelos: {
                 nombre_paralelo: req.body.nombre_paralelo
             }
-        }, {
-            include: ['paralelos']
-        }).then(curso => {
-            res.status(200).json(curso);
-        })
+
+        },{
+            include : ['paralelos']
+        }).then(result => {
+            res.status(200).json(result)
+        } )
     } catch (error) {
         return res.status(400).json({
             msg: 'No se pudo crear',
@@ -21,82 +43,88 @@ async function crearCurso(req, res) {
     }
 }
 
-async function editarCurso(req, res) {
+async function verCursos (req, res) {
     try {
-        const id = req.params.id
-        const curso = await Curso.update(req.body, {
-            where: {
-                id: id
-            }
-        }).then(curso => {
-            res.status(200).json(curso);
-        })
-    } catch (error) {
-        return res.status(400).json({
-            msg: 'No se pudo crear',
-            error
-        })
-    }
-}
-
-async function cursoId(req, res) {
-    try {
-        const course = await Curso.findByPk(req.params.id, {
-            include: {
-                association: "paralelos",
-                attributes: ['id', 'nombre_paralelo', 'cursoId']
-            }
-        })
-        res.json(course);
-    } catch (error) {
-        return res.status(400).json({
-            msg: 'No se pudo crear',
-            error
-        })
-    }
-}
-
-async function verCursos(req, res) {
-    try {
-        const course = await Curso.findAll(
+        const curso = await Curso.findAll(
             {
-                include: {
-                    association: "paralelos",
-                    attributes: ['id', 'nombre_paralelo', 'cursoId']
-                }
+                
+                    include: {
+                        association: "paralelos",
+                        attributes: ['id', 'nombre_paralelo', 'cursoId']
+                    }
+                
             },
         )
-        console.log(course);
-        res.json(course);
+        res.json(curso);
     } catch (error) {
         return res.status(400).json({
             msg: 'No se pudo crear',
-            error
+            error,
+            token
         })
     }
 }
 
-async function eliminarCurso(req, res) {
-    try {
-        const curso = await Curso.destroy({
-            where: { id: req.params.id }
-           
-        }).then(result => {
-            res.status(200).json(result);
+async function eliminar (req, res) {
+
+    req.curso.destroy().then(curso => {
+        res.json({
+            msg: "La tarea a sido elimindada"
         })
-        console.log(estu);
-    } catch (error) {
-        return res.status(400).json({
-            msg: 'No se pudo crear',
-            error
-        })
-    }
+    })
+
+    // try {
+    //     const tarea = await Tareas.destroy({
+    //         where: { id: req.params.id }
+    //     }).then(result => {
+    //         res.status(200).json(result);
+    //     })
+    // } catch (error) {
+    //     return res.status(400).json({
+    //         msg: 'No se pudo crear',
+    //         error,
+    //         token
+    //     })
+    // }
 }
+
+async function editar (req, res){
+
+    req.curso.detalle = req.body.nombre_curso;
+  
+    req.curso.save().then(curso => {
+        res.json(curso);
+    })
+
+
+    // try {
+    //     const id = req.params.id
+      
+    //     const tarea = await Tareas.update(req.body, {
+    //         where: {
+    //             id: id
+    //         }
+    //     }).then(tarea => {
+    //         res.status(200).json(tarea);
+    //         console.log(tarea)
+           
+    //     })
+    // } catch (error) {
+    //     return res.status(400).json({
+    //         msg: 'No se pudo crear',
+    //         error,
+    //         token
+    //     })
+    // }
+}
+
+
 
 module.exports = {
     crearCurso,
     verCursos,
-    editarCurso,
-    eliminarCurso,
-    cursoId
+    eliminar,
+    editar,
+    find,
+    show
 }

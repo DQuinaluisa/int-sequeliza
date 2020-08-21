@@ -10,12 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Clases.hasMany(models.Cursos_Materia, { as: "class", foreignKey: "clasesId" })
-      Clases.belongsTo(models.Estudiante, { as: "estudiante", foreignKey: "estudianteId" })
-      Clases.belongsTo(models.Profesor, { as: "profesor", foreignKey: "profesorId" })
+      Clases.belongsTo(models.Personas, { as: "personas", foreignKey: "personasId" })
     }
   };
   Clases.init({
+    detalle: DataTypes.STRING,
     tareas_realizar: DataTypes.STRING
   }, {
     sequelize,

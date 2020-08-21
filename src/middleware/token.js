@@ -1,7 +1,7 @@
 
 ;
 'use strict'
-
+const { Personas } = require('../models/index');
 const jwt = require('jsonwebtoken'),
      cache = require('memory-cache'),
      authConfig = require('../config/auth')
@@ -19,17 +19,28 @@ let autentica = (req, res, next) => {
                 msg: 'Token invalido'
             }) 
         }else {
-            req.decode = decode
+
+            Personas.findByPk(decode.person.id, { include: "roles" }).then(
+                person => {
+
+                    // console.log(person.roles);
+
+                    req.person = person;
+                    next();
+                }
+            ) 
+
+            // // req.decode = decode
             
-            let token = jwt.sign({data: decode.data}, process.env.AUTH_SECRET, {
-                algorithm: 'HS256',
-                expiresIn: parseInt(process.env.AUTH_EXPIRES)
+            // // let token = jwt.sign({data: decode.data}, process.env.AUTH_SECRET, {
+            // //     algorithm: 'HS256',
+            // //     expiresIn: parseInt(process.env.AUTH_EXPIRES)
             
-              
-            })
+            
+            // })
            
-            req.token = token
-            next()
+            //  req.token = token
+            
         }
     })
 }

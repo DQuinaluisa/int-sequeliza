@@ -1,14 +1,17 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Paralelos', {
+    await queryInterface.createTable('Clases', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      nombre_paralelo: {
+      detalle: {
+        type: Sequelize.STRING
+      },
+      tareas_realizar: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -22,6 +25,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Paralelos');
+    await queryInterface.dropTable('Clases');
   }
 };

@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Paralelos.belongsTo(models.Curso, { as: "curso", foreignKey: "cursoId" })
+      Paralelos.belongsTo(models.Curso, { as: "cursos", foreignKey: "cursoId" })
     }
   };
   Paralelos.init({

@@ -1,36 +1,28 @@
-const { Tareas, Personas } = require('../models/index');
+const { Clases } =require('../models/index');
 const  fs = require('fs-extra');
 const { unlink  }  = require('fs-extra');
 const  path = require('path');
 
 async function find (req, res, next) {
-    let tarea = await Tareas.findByPk(req.params.id);
-    if (!tarea) {
+    let clases = await Clases.findByPk(req.params.id);
+    if (!clases) {
         res.status(404).json({
             msg: "Tarea no encontrada"
         });
     }else {
-        req.tarea = tarea;
+        req.Clases = clases;
         next();
     }
 }
 
-async function show ( req, res) {
-    res.json(req.tarea);
-    
-}
-
-
-async function crearTarea (req, res) {
+async function crearClase (req, res){
     try {
-              
-        await Tareas.create({
+        await Clases.create({
             detalle: req.body.detalle,
-            deber_archivo: req.file.path
-
+            tareas_realizar: req.file.path
         }).then(result => {
-            res.status(200).json(result)
-        } )
+            res.status(200).json(result);
+        })
     } catch (error) {
         return res.status(400).json({
             msg: 'No se pudo crear',
@@ -39,27 +31,26 @@ async function crearTarea (req, res) {
     }
 }
 
-async function verTarea (req, res) {
+async function verClases (req, res){
     try {
-        const tarea = await Tareas.findAll(
+        const clases = await Clases.findAll(
             {
                detalle: req.body.detalle,
-               deber_archivo: req.body.deber_archivo
+               tareas_realizar: req.body.deber_archivo
             },
         )
-        res.json(tarea);
+        res.json(clases);
     } catch (error) {
         return res.status(400).json({
             msg: 'No se pudo crear',
-            error,
-            token
+            error
         })
     }
 }
 
 async function eliminar (req, res) {
 
-    req.tarea.destroy().then(tarea => {
+    req.clases.destroy().then(clases => {
         res.json({
             msg: "La tarea a sido elimindada"
         })
@@ -82,12 +73,12 @@ async function eliminar (req, res) {
 
 async function editar (req, res){
 
-    req.tarea.detalle = req.body.detalle;
-    req.tarea.deber_archivo = req.body.deber_archivo;
-    req.tarea.nota = req.body.nota;
+    req.clases.detalle = req.body.detalle;
+    req.clases.deber_archivo = req.body.deber_archivo;
+    req.clases.nota = req.body.nota;
 
-    req.tarea.save().then(tarea => {
-        res.json(tarea);
+    req.clases.save().then(clases => {
+        res.json(clases);
     })
 
 
@@ -113,12 +104,10 @@ async function editar (req, res){
 }
 
 
-
 module.exports = {
-    crearTarea,
-    verTarea,
+    crearClase,
+    verClases,
     eliminar,
     editar,
-    find,
-    show
+    find
 }

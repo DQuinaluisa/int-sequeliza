@@ -7,13 +7,12 @@ const express = require('express'),
       path = require('path'),
       { join } = require('path'),
       cors = require('cors'),
-      adminRutas = require('../routes/administrador'),
-      estudianteRutas = require('../routes/estudiante'),
-      profesorRutas = require('../routes/profesor'),
+      personRutas = require('../routes/personas'),
       cursosRutas  = require('../routes/cursos'),
-      paraleloRutas = require('../routes/paralelos'),
-      curMatRutas = require('../routes/curso_materia'),
-      tareaRutas = require('../routes/tarea')             
+    //   paraleloRutas = require('../routes/paralelos'),
+    //   curMatRutas = require('../routes/curso_materia'),
+      tareaRutas = require('../routes/tareas'),
+      clasesRutas = require('../routes/clases')
      
 
 app.use(morgan('dev')),
@@ -28,12 +27,12 @@ app.use('/uploads', express.static(path.resolve('uploads')));
 
 app.use(cors());
 
-app.use('/api', adminRutas);
-app.use('/api', estudianteRutas);
-app.use('/api', profesorRutas);
-app.use('/api', cursosRutas);
-app.use('/api', paraleloRutas);
-app.use('/api', curMatRutas);
+app.use('/api', personRutas);
 app.use('/api', tareaRutas);
+app.use('/api', clasesRutas);
+app.use('/api', cursosRutas);
+// app.use('/api', paraleloRutas);
+// app.use('/api', curMatRutas);
+
 
 module.exports = app;
