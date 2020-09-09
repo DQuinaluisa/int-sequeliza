@@ -10,7 +10,7 @@ const app = require('./app'),
 
        sequelize.authenticate().then(() => {
            console.log("DB Conectada")
-       })
+       }) 
 
     //    sequelize.sync({ force:true }).then(() => {
     //     console.log("DB Conectada")

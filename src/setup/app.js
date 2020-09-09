@@ -8,31 +8,41 @@ const express = require('express'),
       { join } = require('path'),
       cors = require('cors'),
       personRutas = require('../routes/personas'),
+      profesorRutas = require('../routes/profesor'),
+      estudianteRutas = require('../routes/estudiante'),
       cursosRutas  = require('../routes/cursos'),
-    //   paraleloRutas = require('../routes/paralelos'),
-    //   curMatRutas = require('../routes/curso_materia'),
+      materiasRutas = require('../routes/materias'),
+      matriculaRutas = require('../routes/matricula'),
       tareaRutas = require('../routes/tareas'),
       clasesRutas = require('../routes/clases')
      
 
-app.use(morgan('dev')),
+app.use(morgan('dev'))
 
-
+// corsOptions = {
+//   origin: 'http://localhost:3000',
+//   optionsSuccessStatus: 200
+// }
 
 app.use(bodyParser.urlencoded({ extended: false })),
 app.use(bodyParser.json()),
 
+
+
+
 app.use('/uploads', express.static(path.resolve('uploads')));
 
-
+// app.use(cors(corsOptions));
 app.use(cors());
 
 app.use('/api', personRutas);
+app.use('/api', profesorRutas);
+app.use('/api', estudianteRutas);
 app.use('/api', tareaRutas);
 app.use('/api', clasesRutas);
 app.use('/api', cursosRutas);
-// app.use('/api', paraleloRutas);
-// app.use('/api', curMatRutas);
+app.use('/api', materiasRutas);
+app.use('/api', matriculaRutas);
 
 
 module.exports = app;

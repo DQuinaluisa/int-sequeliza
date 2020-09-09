@@ -9,20 +9,25 @@ module.exports = (sequelize, DataTypes) => {
    
    
     static associate(models) {
-      Personas.hasMany(models.Roles, { as: "roles", foreignKey: "personasId" }),
-      Personas.hasMany(models.Tareas, { as: "tarea", foreignKey: "personasId" }),
-      Personas.hasMany(models.Clases, { as: "clases", foreignKey: "personasId" })
+      Personas.hasOne(models.Profesor, { as: "profesores", foreignKey: "idPersona" }),
+      Personas.hasOne(models.Estudiante, { as: "estudiantes", foreignKey: "idPersona" }),
+      Personas.hasMany(models.Roles, { as: "roles", foreignKey: "idPersona" }),
+      Personas.hasMany(models.Tareas, { as: "tarea", foreignKey: "idPersona" }),
+      Personas.hasMany(models.Clases, { as: "clases", foreignKey: "idPersona" })
     }
 
   
   }; 
   Personas.init({
-    name: DataTypes.STRING,
-    lastname: DataTypes.STRING,
-    identification: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    img: DataTypes.STRING
+    nombre: DataTypes.STRING,
+    apellido: DataTypes.STRING,
+    identificacion: DataTypes.STRING,
+    direccion: DataTypes.STRING,
+    fechaNacimiento: DataTypes.DATE,
+    correo: DataTypes.STRING,
+    telefono: DataTypes.STRING,
+    contactoEmergencia: DataTypes.STRING,
+    img: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Personas',

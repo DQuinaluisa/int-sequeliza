@@ -30,17 +30,17 @@ let autentica = (req, res, next) => {
                 }
             ) 
 
-            // // req.decode = decode
+            // req.decode = decode
             
-            // // let token = jwt.sign({data: decode.data}, process.env.AUTH_SECRET, {
-            // //     algorithm: 'HS256',
-            // //     expiresIn: parseInt(process.env.AUTH_EXPIRES)
+            // let token = jwt.sign({data: decode.data}, process.env.AUTH_SECRET, {
+            //     algorithm: 'HS256',
+            //     expiresIn: parseInt(process.env.AUTH_EXPIRES)
             
             
             // })
            
             //  req.token = token
-            
+            // next();
         }
     })
 }
